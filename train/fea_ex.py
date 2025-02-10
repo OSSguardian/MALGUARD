@@ -66,7 +66,5 @@ def main(base_dir, centrality_file, top_n=500):
             for error in error_log:
                 f.write(f"{error}\n")
 
-
-# Example usage
 # top n = 200, 300, 400, 500
 main(r'', 'closeness_centrality.json', top_n=200)
