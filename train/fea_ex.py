@@ -8,7 +8,6 @@ def load_top_features(centrality_file, top_n=500):
     with open(centrality_file, 'r', encoding='utf-8') as f:
         centrality_data = json.load(f)
 
-    # 取排名前 top_n 的特征
     top_features = list(centrality_data.keys())[:top_n]
     top_centrality_values = {k: centrality_data[k] for k in top_features}
 
@@ -32,7 +31,6 @@ def extract_feature_vector(package_dir, top_features):
                     tqdm.write(f"Error processing file: {file_path}. Error: {e}")
                     continue
 
-    # 将每个特征值乘以对应的中心性值
     for i, feature in enumerate(top_features):
         feature_vector[i] *= top_features[feature]
 
@@ -63,8 +61,6 @@ def main(base_dir, centrality_file, top_n=500):
             error_msg = f"Error processing package: {package_dir}. Error: {e}"
             tqdm.write(error_msg)
             error_log.append(error_msg)
-
-    # 将所有错误信息保存到 error_log.txt
     if error_log:
         with open('ben_error_log.txt', 'w', encoding='utf-8') as f:
             for error in error_log:
@@ -73,4 +69,4 @@ def main(base_dir, centrality_file, top_n=500):
 
 # Example usage
 # top n = 200, 300, 400, 500
-main(r'F:\dataset\extract', 'closeness_centrality.json', top_n=200)
+main(r'', 'closeness_centrality.json', top_n=200)
