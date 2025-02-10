@@ -79,10 +79,10 @@ def train_with_progress_bar(model, X_train, y_train, X_test, y_test, model_name,
     #             tqdm.write(f"{feature}: {weight}, API NAME :{API_NAME}, API ID: {api_id}, Malicious Purposes: {malicious_purposes}")
 
 def main():
-    mal_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\mal_closeness_feature_vectors.txt'
-    ben_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\ben_closeness_feature_vectors.txt'
-    sensitive_api_file = r"E:\py-torch-learning\py-torch-learning\src\social-network\closeness_sensitive_api.json"
-    model_save_path = r"E:\py-torch-learning\py-torch-learning\src\model\closeness"
+    mal_data_path = r'mal_closeness_feature_vectors.txt'
+    ben_data_path = r'ben_closeness_feature_vectors.txt'
+    sensitive_api_file = r"closeness_sensitive_api.json"
+    model_save_path = r"model\closeness"
 
     X_train, X_test, y_train, y_test = load_data(
         mal_data_path,
@@ -127,10 +127,10 @@ def main():
 
 def main1():
 
-    mal_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\mal_degree_feature_vectors.txt'
-    ben_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\ben_degree_feature_vectors.txt'
-    sensitive_api_file = r"E:\py-torch-learning\py-torch-learning\src\social-network\degree_sensitive_api.json"
-    model_save_path = r"E:\py-torch-learning\py-torch-learning\src\model\degree"
+    mal_data_path = r'mal_degree_feature_vectors.txt'
+    ben_data_path = r'ben_degree_feature_vectors.txt'
+    sensitive_api_file = r"degree_sensitive_api.json"
+    model_save_path = r"model\degree"
 
     X_train, X_test, y_train, y_test = load_data(
         mal_data_path,
@@ -173,10 +173,10 @@ def main1():
 
 
 def main2():
-    mal_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\mal_harmonic_feature_vectors.txt'
-    ben_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\ben_harmonic_feature_vectors.txt'
-    sensitive_api_file = r"E:\py-torch-learning\py-torch-learning\src\social-network\harmonic_sensitive_api.json"
-    model_save_path = r"E:\py-torch-learning\py-torch-learning\src\model\harmonic"
+    mal_data_path = r'mal_harmonic_feature_vectors.txt'
+    ben_data_path = r'ben_harmonic_feature_vectors.txt'
+    sensitive_api_file = r"harmonic_sensitive_api.json"
+    model_save_path = r"model\harmonic"
 
     X_train, X_test, y_train, y_test = load_data(
         mal_data_path,
@@ -218,10 +218,10 @@ def main2():
                             sensitive_apis, n_iter=100)
 
 def main3():
-    mal_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\mal_katz_feature_vectors.txt'
-    ben_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\ben_katz_feature_vectors.txt'
-    sensitive_api_file = r"E:\py-torch-learning\py-torch-learning\src\social-network\katz_sensitive_api.json"
-    model_save_path = r"E:\py-torch-learning\py-torch-learning\src\model\katz"
+    mal_data_path = r'mal_katz_feature_vectors.txt'
+    ben_data_path = r'ben_katz_feature_vectors.txt'
+    sensitive_api_file = r"katz_sensitive_api.json"
+    model_save_path = r"model\katz"
 
     X_train, X_test, y_train, y_test = load_data(
         mal_data_path,
