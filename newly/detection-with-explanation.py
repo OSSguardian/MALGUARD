@@ -9,14 +9,13 @@ from tqdm import tqdm
 from lime import lime_tabular
 from data_loader import load_data
 
-mal_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\mal_katz_feature_vectors.txt'
-ben_data_path = r'E:\py-torch-learning\py-torch-learning\src\dataset\ben_katz_feature_vectors.txt'
+mal_data_path = r'mal_katz_feature_vectors.txt'
+ben_data_path = r'ben_katz_feature_vectors.txt'
 
 X_train, X_test, y_train, y_test = load_data(
         mal_data_path,
         ben_data_path)
 def get_malicious_purposes(api_name, sensitive_apis):
-    # 遍历敏感API列表，根据 api_id 查找
     for api in sensitive_apis:
         if api["api_name"] == api_name:
             return api["malicious_purposes"]
@@ -31,13 +30,8 @@ def load_sensitive_apis(file_path):
 
 
 def parse_cfg_file(cfg_path):
-    """
-    解析 CFG.txt 文件，提取 API 名及其对应的文件名、行号和函数。
-    :param cfg_path: CFG.txt 文件路径
-    :return: List of tuples, 每个元素为 (api_name, file_name, line_number, function_name)
-    """
     if not os.path.exists(cfg_path):
-        return []  # 如果文件不存在，返回空列表
+        return [] 
 
     results = []
     with open(cfg_path, 'r', encoding='utf-8') as f:
@@ -49,10 +43,8 @@ def parse_cfg_file(cfg_path):
     return results
 
 def evaluate_packages_with_lime(test_dir, model_save_path, sensitive_api_file):
-    # 加载敏感 API 数据
     sensitive_apis = load_sensitive_apis(sensitive_api_file)
 
-    # 加载模型
     models = {
         # "Naive Bayes (NB)": os.path.join(model_save_path, "naive_bayes_(nb)", "naive_bayes_(nb)_model.pkl"),
         "Random Forest (RF)": os.path.join(model_save_path, "random_forest_(rf)", "random_forest_(rf)_model.pkl"),
@@ -64,11 +56,9 @@ def evaluate_packages_with_lime(test_dir, model_save_path, sensitive_api_file):
 
     models = {name: joblib.load(path) for name, path in models.items()}
 
-    # 初始化 LIME 解释器
-    explainer = None  # 延迟初始化以便动态加载训练数据
+    explainer = None
 
-    # 遍历测试目录中的包
-    malicious_packages = {model_name: [] for model_name in models}  # 每个模型单独保存恶意包名称
+    malicious_packages = {model_name: [] for model_name in models} 
 
     for package_name in tqdm(os.listdir(test_dir), desc="Evaluating packages", unit="package"):
         package_path = os.path.join(test_dir, package_name)
@@ -85,14 +75,12 @@ def evaluate_packages_with_lime(test_dir, model_save_path, sensitive_api_file):
         with open(fea_vec_file, "r") as f:
             feature_vector = json.load(f)
 
-        # 转换为模型输入格式
         feature_name = list(feature_vector.keys())
         features = np.array([list(feature_vector.values())])
         # print(feature_name)
         # print(features)
 
         for model_name, model in models.items():
-            # 第一次处理时初始化 LIME 解释器
             if explainer is None:
                 explainer = lime_tabular.LimeTabularExplainer(
                     X_train,
@@ -103,13 +91,11 @@ def evaluate_packages_with_lime(test_dir, model_save_path, sensitive_api_file):
                     mode="classification"
                 )
 
-            # 预测结果
             prediction = model.predict(features)[0]
             total_fea = np.sum(features)
-            if prediction == 1 and total_fea > 0:  # 被预测为恶意
+            if prediction == 1 and total_fea > 0:  
                 malicious_packages[model_name].append(package_name)
 
-                # 生成 LIME 解释
                 explanation = explainer.explain_instance(features[0], model.predict_proba, num_features=len(feature_vector))
                 cfg_path = os.path.join(package_path, "CFG.txt")
                 cfg_entries = parse_cfg_file(cfg_path)
@@ -152,10 +138,10 @@ def evaluate_packages_with_lime(test_dir, model_save_path, sensitive_api_file):
         tqdm.write(f"Malicious packages for {model_name} saved to {malicious_file}")
 
 def main():
-    # 你的模型保存路径和测试目录路径
-    test_dir = r"F:\weekly_update\1229-0110_dcp"
-    model_save_path = r"E:\py-torch-learning\py-torch-learning\src\model\katz"
-    sensitive_api_file = r"E:\py-torch-learning\py-torch-learning\src\social-network\katz_sensitive_api.json"
+
+    test_dir = r"weekly_update\1229-0110_dcp"
+    model_save_path = r"model\katz"
+    sensitive_api_file = r"katz_sensitive_api.json"
 
     evaluate_packages_with_lime(test_dir, model_save_path, sensitive_api_file)
 
