@@ -56,7 +56,6 @@ def calculate_centrality(G):
                 'katz': {k: v + 1 for k, v in nx.katz_centrality_numpy(G, alpha=0.01).items()}
             }
         except TypeError as e:
-            print(f"Katz calculate error: {e}")
             centralities = {
                 'degree': {k: v + 1 for k, v in nx.degree_centrality(G).items()},
                 'closeness': {k: v + 1 for k, v in nx.closeness_centrality(G).items()},
